@@ -1,9 +1,4 @@
-div.wrapper.oh
-  - const upDog = dog.toUpperCase();
-  p.hello Hello my dogs name is #{dog.toUpperCase()}
-  span#yo Yo!
-  img.dog(src="dog.jpg" alt=`dog ${upDog}`)
+extends layout
 
-h2 
-  | hello
-  em how are you?
+block content
+  p Hello!
