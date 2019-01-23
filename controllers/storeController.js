@@ -32,14 +32,24 @@ exports.editStore = async (req, res) => {
 };
 
 exports.updateStore = async (req, res) => {
-  // find and update the store
-  const store = await Store.findByIdAndUpdate({ _id: req.params.id }, req.body, {
-    new: true, // return new store instead of the old one
-    runValidators: true
-  }).exec();
+  // set the location data to be a point
+  req.body.location.type = 'Point';
 
-  req.flash('success', `Successfully updated <strong>${store.name}</strong>. 
-  <a href="/stores/${store.slug}">View Store</a>`);
+  // find and update the store
+  const store = await Store.findByIdAndUpdate(
+    { _id: req.params.id },
+    req.body,
+    {
+      new: true, // return new store instead of the old one
+      runValidators: true
+    }
+  ).exec();
+
+  req.flash(
+    "success",
+    `Successfully updated <strong>${store.name}</strong>. 
+  <a href="/stores/${store.slug}">View Store</a>`
+  );
 
   res.redirect(`/stores/${store._id}/edit`);
 };
