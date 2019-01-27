@@ -37,12 +37,22 @@ const storeSchema = new mongoose.Schema({
   photo: String
 });
 
-storeSchema.pre("save", function(next) {
+storeSchema.pre("save", async function(next) {
   if (!this.isModified("name")) {
     next(); // skip it.
     return; // stop this function from running.
   }
   this.slug = slug(this.name);
+
+  // find other stores that have a slug of passed in, some-store-1, some-store-2
+  const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, "i");
+
+  const stroeWithSlug = await this.constructor.find({ slug: slugRegEx });
+
+  if (stroeWithSlug.length) {
+    this.slug = `${this.slug}-${stroeWithSlug.length + 1}`;
+  }
+
   next();
 });
 
