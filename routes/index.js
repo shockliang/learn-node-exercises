@@ -50,4 +50,7 @@ router.post(
   catchErrors(authController.update)
 );
 
+// Api section
+router.get("/api/search", catchErrors(storeController.searchStores));
+
 module.exports = router;
